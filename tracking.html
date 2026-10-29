@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Tracking DO - SITTA UT</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <ul class="nav-menu">
+            <li><a href="index.html">Beranda</a></li>
+            <li><a href="stok.html" >Informasi Bahan Ajar</a></li>
+            <li><a href="tracking.html" class="active">Tracking Pengiriman</a></li>
+        </ul>
+    </nav>
+    <div id="app" style="padding: 20px;">
+        <h2>Tracking Delivery Order (DO) Bahan Ajar</h2>
+
+        <!-- Form Input DO Baru -->
+        <fieldset style="padding: 15px; margin-bottom: 20px;">
+            <legend><strong>Buat Delivery Order (DO) Baru</strong></legend>
+            <form @submit.prevent="tambahDO">
+                <p>
+                    <label>Nomor DO (Auto-Generated):</label><br>
+                    <input type="text" v-model="generatedNoDO" readonly style="background: #e9e9e9;">
+                </p>
+                <p>
+                    <label>NIM:</label><br>
+                    <input type="text" v-model="inputNIM" required placeholder="Masukkan NIM mahasiswa">
+                </p>
+                <p>
+                    <label>Nama Mahasiswa:</label><br>
+                    <input type="text" v-model="inputNama" required placeholder="Masukkan nama lengkap">
+                </p>
+                <p>
+                    <label>Ekspedisi:</label><br>
+                    <select v-model="inputEkspedisi" required>
+                        <option disabled value="">-- Pilih Ekspedisi --</option>
+                        <option v-for="eks in pengirimanList" :value="eks.nama">{{ eks.nama }}</option>
+                    </select>
+                </p>
+                <p>
+                    <label>Paket Bahan Ajar:</label><br>
+                    <select v-model="selectedPaketKode" @change="updateDetailPaket" required>
+                        <option disabled value="">-- Pilih Paket Bahan Ajar --</option>
+                        <option v-for="p in paket" :value="p.kode">{{ p.kode }} - {{ p.nama }}</option>
+                    </select>
+                </p>
+
+                <!-- Menampilkan detail isi paket -->
+                <div v-if="selectedPaketDetail" style="background: #f9f9f9; padding: 10px; border: 1px solid #ddd; margin-bottom: 15px;">
+                    <p><strong>Detail Paket:</strong> {{ selectedPaketDetail.nama }}</p>
+                    <p><strong>Daftar Kode MK dalam Paket:</strong> {{ selectedPaketDetail.isi.join(', ') }}</p>
+                    <p><strong>Total Harga: Rp {{ selectedPaketDetail.harga.toLocaleString() }}</strong></p>
+                </div>
+
+                <p>
+                    <label>Tanggal Kirim:</label><br>
+                    <input type="date" v-model="inputTanggal" required>
+                </p>
+
+                <button type="submit">Simpan & Generate DO</button>
+            </form>
+        </fieldset>
+
+        <!-- Tabel Tracking -->
+        <h3>Daftar Status Tracking DO</h3>
+        <table border="1" cellpadding="10" cellspacing="0" width="100%" style="border-collapse: collapse;">
+            <thead>
+                <tr style="background: #f2f2f2;">
+                    <th>Nomor DO</th>
+                    <th>NIM / Nama</th>
+                    <th>Ekspedisi</th>
+                    <th>Paket</th>
+                    <th>Total Harga</th>
+                    <th>Tanggal Kirim</th>
+                    <th>Status & Riwayat</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(data, noDO) in trackingList" :key="noDO">
+                    <td><strong>{{ noDO }}</strong></td>
+                    <td>{{ data.nim }}<br>{{ data.nama }}</td>
+                    <td>{{ data.ekspedisi }}</td>
+                    <td>{{ data.paket }}</td>
+                    <td>Rp {{ data.total.toLocaleString() }}</td>
+                    <td>{{ data.tanggalKirim }}</td>
+                    <td>
+                        Status: <strong>{{ data.status }}</strong>
+                        <ul>
+                            <li v-for="riwayat in data.perjalanan">
+                                <small>{{ riwayat.waktu }} - {{ riwayat.keterangan }}</small>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Script logika Tracking -->
+    <script src="js/tracking-app.js"></script>
+</body>
+</html>

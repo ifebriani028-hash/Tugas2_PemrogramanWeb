@@ -1,0 +1,190 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f4f6f9;
+    color: #333333;
+    line-height: 1.6;
+    padding: 20px;
+}
+
+nav {
+    margin-bottom: 20px;
+}
+
+nav a {
+    color: #0056b3;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+.navbar {
+    background-color: #1d96f2;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+}
+
+.nav-brand {
+    font-weight: bold;
+    color: #ffcc00;
+}
+
+.nav-menu {
+    list-style: none;
+    display: flex;
+    align-items: center;
+}
+
+.nav-menu li {
+    position: relative;
+    margin-left: 20px;
+}
+
+.nav-menu a {
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.nav-menu a:hover, .nav-menu a.active {
+    color: #ffcc00;
+}
+
+h1, h2, h3 {
+    color: #003366;
+    margin-bottom: 15px;
+}
+
+fieldset {
+    background-color: #ffffff;
+    border: 1px solid #dcdfe6;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 25px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+legend {
+    background-color: #003366;
+    color: #ffffff;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+form p {
+    margin-bottom: 15px;
+}
+
+label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #444;
+    display: inline-block;
+    margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="date"],
+select {
+    width: 100%;
+    max-width: 400px;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 0.95rem;
+}
+
+fieldset select,
+fieldset input[type="text"] {
+    width: auto;
+    display: inline-block;
+    margin-right: 15px;
+}
+
+input[readonly] {
+    background-color: #eef2f5;
+    color: #666;
+}
+
+input[type="checkbox"] {
+    margin-right: 6px;
+    transform: scale(1.1);
+}
+
+button {
+    background-color: #0056b3;
+    color: #ffffff;
+    border: none;
+    padding: 9px 18px;
+    border-radius: 5px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #003366;
+}
+
+button[type="submit"] {
+    background-color: #28a745;
+}
+
+button[type="submit"]:hover {
+    background-color: #218838;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    margin-top: 15px;
+    margin-bottom: 25px;
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #e9ecef;
+    font-size: 0.92rem;
+}
+
+th {
+    background-color: #f1f4f8;
+    color: #003366;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+}
+
+tr:hover {
+    background-color: #f8f9fa;
+}
+
+td ul {
+    padding-left: 18px;
+    margin-top: 5px;
+}
+
+td li {
+    font-size: 0.85rem;
+    color: #555;
+}

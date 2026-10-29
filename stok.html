@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Stok Bahan Ajar - SITTA UT</title>
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Load Vue.js v2 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <ul class="nav-menu">
+            <li><a href="index.html">Beranda</a></li>
+            <li><a href="stok.html" class="active">Informasi Bahan Ajar</a></li>
+            <li><a href="tracking.html">Tracking Pengiriman</a></li>
+        </ul>
+    </nav>
+    <div id="app" style="padding: 20px;">
+        <h2>Manajemen Stok Bahan Ajar UT Daerah</h2>
+
+        <!-- Filter & Sort -->
+        <fieldset style="margin-bottom: 20px; padding: 15px;">
+            
+            
+            <label>Pilih UT-Daerah (UPBJJ):</label>
+            <select v-model="selectedUpbjj">
+                <option value="">-- Semua UT Daerah --</option>
+                <option v-for="upbjj in upbjjList" :value="upbjj">{{ upbjj }}</option>
+            </select>
+
+            <label style="margin-left: 15px;">Kategori Mata Kuliah:</label>
+            <select v-model="selectedKategori">
+                <option value="">-- Semua Kategori --</option>
+                <option v-for="kat in kategoriList" :value="kat">{{ kat }}</option>
+            </select>
+
+            <label style="margin-left: 15px;">Sort Berdasarkan:</label>
+            <select v-model="sortBy">
+                <option value="judul">Judul Buku</option>
+                <option value="qty">Jumlah Stok</option>
+                <option value="harga">Harga</option>
+            </select>
+
+            <label style="margin-left: 15px;">
+                <input type="checkbox" v-model="filterReorder"> Tampilkan Stok Menipis
+            </label>
+
+            <button @click="resetFilter" style="margin-left: 15px;">Reset Filter</button>
+        </fieldset>
+
+        <!-- Tabel Stok -->
+        <table border="1" cellpadding="10" cellspacing="0" width="100%" style="border-collapse: collapse;">
+            <thead>
+                <tr style="background: #f2f2f2;">
+                    <th>Kode / Judul</th>
+                    <th>Kategori</th>
+                    <th>UT-Daerah</th>
+                    <th>Lokasi Rak</th>
+                    <th>Harga</th>
+                    <th>Stok (Qty / Safety)</th>
+                    <th>Status Stok</th>
+                    <th>Catatan</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(item, index) in filteredAndSortedStok" :key="item.kode">
+                    <td>
+                        <strong>{{ item.kode }}</strong><br>
+                        {{ item.judul }}
+                    </td>
+                    <td>{{ item.kategori }}</td>
+                    <td>{{ item.upbjj }}</td>
+                    <td>{{ item.lokasiRak }}</td>
+                    <td>Rp {{ item.harga.toLocaleString() }}</td>
+                    <td>{{ item.qty }} / {{ item.safety }}</td>
+                    <td>
+                        <!-- Conditional Rendering v-if / v-else-if / v-else -->
+                        <span v-if="item.qty === 0" style="color: red; font-weight: bold;">🔴 Kosong</span>
+                        <span v-else-if="item.qty < item.safety" style="color: orange; font-weight: bold;">🟠 Menipis</span>
+                        <span v-else style="color: green; font-weight: bold;">🟢 Aman</span>
+                    </td>
+                    <td v-html="item.catatanHTML"></td>
+                    <td>
+                        <button @click="editItem(item)">Edit Qty</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Form Tambah / Edit -->
+        <fieldset style="margin-top: 30px; padding: 15px;">
+            <legend><strong>Form Tambah / Edit Bahan Ajar</strong></legend>
+            <form @submit.prevent="saveBahanAjar">
+                <p>
+                    <label>Kode MK:</label><br>
+                    <input type="text" v-model="form.kode" required>
+                </p>
+                <p>
+                    <label>Judul Mata Kuliah:</label><br>
+                    <input type="text" v-model="form.judul" required>
+                </p>
+                <p>
+                    <label>Kategori:</label><br>
+                    <select v-model="form.kategori" required>
+                        <option v-for="kat in kategoriList" :value="kat">{{ kat }}</option>
+                    </select>
+                </p>
+                <p>
+                    <label>UT-Daerah:</label><br>
+                    <select v-model="form.upbjj" required>
+                        <option v-for="u in upbjjList" :value="u">{{ u }}</option>
+                    </select>
+                </p>
+                <p>
+                    <label>Lokasi Rak:</label><br>
+                    <input type="text" v-model="form.lokasiRak" required>
+                </p>
+                <p>
+                    <label>Harga:</label><br>
+                    <input type="number" v-model.number="form.harga" required>
+                </p>
+                <p>
+                    <label>Jumlah Stok (Qty):</label><br>
+                    <input type="number" v-model.number="form.qty" required>
+                </p>
+                <p>
+                    <label>Safety Stock:</label><br>
+                    <input type="number" v-model.number="form.safety" required>
+                </p>
+                <p>
+                    <label>Catatan (HTML):</label><br>
+                    <input type="text" v-model="form.catatanHTML">
+                </p>
+                <button type="submit">Simpan Data</button>
+            </form>
+        </fieldset>
+    </div>
+    <!-- Script logika Stok -->
+    <script src="js/stok-app.js"></script>
+</body>
+</html>
